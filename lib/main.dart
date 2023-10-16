@@ -336,6 +336,10 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     } catch (exception) {
       print("coud not send get with path:$path, I will try again");
+      if (address != null)
+        print("the address to send message is:" + address!);
+      else
+        print("the address to send message is server:" + players[0].serverIp);
       sendGet(address, path: path);
     }
   }
@@ -1036,8 +1040,14 @@ class _MyHomePageState extends State<MyHomePage> {
             print("licitatie inside server socket");
             int index_next = int.parse(match[1]!);
 
-            if (index_next < players.length)
-              sendGet(players[index_next].personalIp, path: "/licitatie");
+            if (index_next < players.length) {
+              print("send to player with index:${index_next}");
+
+              if (index_next == myIndex)
+                licitatie(index_next);
+              else
+                sendGet(players[index_next].personalIp, path: "/licitatie");
+            }
           } else {
             RegExp exp2 = RegExp(r"/winner/(.*)", dotAll: true);
 
